@@ -3,15 +3,25 @@
 #include <string>
 #include <cstdlib>
 
+#define NOTIF_ERROR "\nInvalid notation!\nPlease, utilize Polish Notation for arguments (-help for correct usage).\n"
+
 int isInt(char* op)
 {
-	for (int i = 0; i < sizeof(op); i++) {
-		if (op[i] != '\0' && (op[i] < '0' || op[i] > '9')) {
+	// empty string (shouldn't be possible)
+	if (sizeof(op) == 0)
+	{
+		return 0;
+	}
+	for (int i = 0; op[i] != '\0'; i++)
+	{
+		if (op[i] != '\0' && (op[i] < '0' || op[i] > '9'))
+		{
 			// operator
-			if (op[i] == '+' || op[i] == '-' || op[i] == '*' || op[i] == '/') {
+			if (op[i] == '+' || op[i] == '-' || op[i] == '*' || op[i] == '/')
+			{
 				return -1;
 			}
-			std::cout << op[i] << std::endl;
+			
 			// invalid string
 			return 0;
 		}
@@ -23,10 +33,12 @@ int isInt(char* op)
 
 int operate(int carry, char* num, char* op)
 {
-	if (isInt(num) != 1 || isInt(op) != -1) {
-		std::cout << "Error" << std::endl;
+	if (isInt(num) != 1 || isInt(op) != -1)
+	{
+		std::cout << NOTIF_ERROR << "(Error message: invalid character/order reached)\n";
 	}
-	else {
+	else
+	{
 		switch (op[0])
 		{
 		case '+':
@@ -66,22 +78,36 @@ int main(int argc, char* argv[])
 		else
 		{
 			isnum = isInt(argv[1]);
-			std::cout << isnum << std::endl;
 
 			if (isnum == 1)
 			{
 				result = std::atoi(argv[1]);
 
-				for (int i = 2; i < argc; i += 2) {
-					result = operate(result, argv[i], argv[i + 1]);
+				for (int i = 2; i < argc; i += 2)
+				{
+					if (i + 1 < argc)
+					{
+						result = operate(result, argv[i], argv[i + 1]);
+					}
+					else
+					{
+						std::cout << NOTIF_ERROR << "(Error message: invalid length of arguments)\n";
+
+						return 0;
+					}
 				}
+
+				std::cout << "Result: " << result << std::endl;
 			}
 			else
 			{
-				std::cout << "Invalid notation! Please, utilize Polish Notation "
-					"for arguments (-help for correct usage).\n";
+				std::cout << NOTIF_ERROR << "(Error message: invalid character / order reached)\n";
 			}
 		}
+	}
+	else
+	{
+		std::cout << NOTIF_ERROR << "(Error message: no arguments)\n";
 	}
 
 	//getchar();
