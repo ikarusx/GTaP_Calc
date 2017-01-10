@@ -135,6 +135,77 @@ double operate(double carry, char* num, char* op)
 	return carry;
 }
 
+void printHelp(void)
+{
+	std::cout << std::endl << "Usage:" << std::endl << std::endl;
+	std::cout << "\tThis is a simple calculator that evaluates integer and floating point "
+		"arithmatic calculations by using Polish Notation for its arguments." << std::endl << std::endl;
+	std::cout << "\tFor example, execute the program as:\n\n"
+		"\t\tCalc.exe int1 int2 operation (int3 op int4 op ...)\n"
+		"\t\tCalc.exe float1 float2 operation (float3 op float4 op ...)\n"
+		"\t\tCalc.exe int1 float2 operation (float3 op int4 op ...)"
+		<< std::endl << std::endl;
+}
+
+void parseAndCalculate(int argc, char* argv[])
+{
+	bool float_flag = false;
+	int iresult = 0;
+	double fresult = 0.0f;
+
+	if (isInteger(argv[1]))
+	{
+		iresult = std::atoi(argv[1]);
+	}
+	else if (isFloatingPoint(argv[1]))
+	{
+		fresult = std::atof(argv[1]);
+		float_flag = true;
+	}
+	else
+	{
+		std::cout << NOTIF_ERROR << "(Error message: invalid character / order reached)\n";
+
+		return;
+	}
+
+	for (int i = 2; i < argc; i += 2)
+	{
+		if (i + 1 < argc)
+		{
+			if (float_flag)
+			{
+				fresult = operate(fresult, argv[i], argv[i + 1]);
+			}
+			else if (isFloatingPoint(argv[i]))
+			{
+				float_flag = true;
+				fresult = static_cast<double>(iresult);
+				fresult = operate(fresult, argv[i], argv[i + 1]);
+			}
+			else
+			{
+				iresult = operate(iresult, argv[i], argv[i + 1]);
+			}
+		}
+		else
+		{
+			std::cout << NOTIF_ERROR << "(Error message: invalid length of arguments)\n";
+
+			return;
+		}
+	}
+
+	if (float_flag)
+	{
+		std::cout << std::showpoint << "Result: " << fresult << std::endl;
+	}
+	else
+	{
+		std::cout << "Result: " << iresult << std::endl;
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	bool float_flag = false;
@@ -145,81 +216,11 @@ int main(int argc, char* argv[])
 	{
 		if (strcmp(argv[1], "-help") == 0)
 		{
-			std::cout << std::endl << "Usage:" << std::endl << std::endl;
-			std::cout << "\tThis is a simple calculator that evaluates integer and floating point "
-				"arithmatic calculations by using Polish Notation for its arguments." << std::endl << std::endl;
-			std::cout << "\tFor example, execute the program as:\n\n"
-				"\t\tCalc.exe int1 int2 operation (int3 op int4 op ...)\n"
-				"\t\tCalc.exe float1 float2 operation (float3 op float4 op ...)\n"
-				"\t\tCalc.exe int1 float2 operation (float3 op int4 op ...)"
-				<< std::endl << std::endl;
+			printHelp();
 		}
 		else
 		{
-			if (isInteger(argv[1]))
-			{
-				iresult = std::atoi(argv[1]);
-
-				for (int i = 2; i < argc; i += 2)
-				{
-					if (i + 1 < argc)
-					{
-						if (float_flag)
-						{
-							fresult = operate(fresult, argv[i], argv[i + 1]);
-						}
-						else if (isFloatingPoint(argv[i]))
-						{
-							float_flag = true;
-							fresult = static_cast<double>(iresult);
-							fresult = operate(fresult, argv[i], argv[i + 1]);
-						}
-						else
-						{
-							iresult = operate(iresult, argv[i], argv[i + 1]);
-						}
-					}
-					else
-					{
-						std::cout << NOTIF_ERROR << "(Error message: invalid length of arguments)\n";
-
-						return 0;
-					}
-				}
-
-				if (float_flag)
-				{
-					std::cout << std::showpoint << "Result: " << fresult << std::endl;
-				}
-				else
-				{
-					std::cout << "Result: " << iresult << std::endl;
-				}
-			}
-			else if (isFloatingPoint(argv[1]))
-			{
-				fresult = std::atof(argv[1]);
-
-				for (int i = 2; i < argc; i += 2)
-				{
-					if (i + 1 < argc)
-					{
-						fresult = operate(fresult, argv[i], argv[i + 1]);
-					}
-					else
-					{
-						std::cout << NOTIF_ERROR << "(Error message: invalid length of arguments)\n";
-
-						return 0;
-					}
-				}
-
-				std::cout << std::showpoint << "Result: " << fresult << std::endl;
-			}
-			else
-			{
-				std::cout << NOTIF_ERROR << "(Error message: invalid character / order reached)\n";
-			}
+			parseAndCalculate(argc, argv);
 		}
 	}
 	else
