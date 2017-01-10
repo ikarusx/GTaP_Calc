@@ -78,6 +78,9 @@ int operate(int carry, char* num, char* op)
 	if (!isInteger(num) || !isOperator(op))
 	{
 		std::cout << NOTIF_ERROR << "(Error message: invalid character/order reached)\n";
+
+		getchar();
+		exit(0);
 	}
 	else
 	{
