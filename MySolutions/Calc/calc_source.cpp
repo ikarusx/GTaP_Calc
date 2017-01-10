@@ -9,7 +9,7 @@
 *
 * @author Matheus Depra Gudergues
 *
-* @brief This program emulates a simple calculator (Assignment 1).
+* @brief This program emulates a simple calculator (works with float) (Assignment 1).
 *
 * @return 0 if everything executed correctly
 *
