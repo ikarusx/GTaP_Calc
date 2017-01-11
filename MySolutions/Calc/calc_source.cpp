@@ -224,10 +224,6 @@ void parseAndCalculate(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	bool float_flag = false;
-	int iresult = 0;
-	double fresult = 0.0f;
-
 	if (argc > 1)
 	{
 		if (strcmp(argv[1], "-help") == 0)
