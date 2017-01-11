@@ -87,16 +87,24 @@ int operate(int carry, char* num, char* op)
 		switch (op[0])
 		{
 		case '+':
+			std::cout << carry << " " << op[0] << " " << num;
 			carry += atoi(num);
+			std::cout << " = " << carry << std::endl;
 			break;
 		case '-':
+			std::cout << carry << " " << op[0] << " " << num;
 			carry -= atoi(num);
+			std::cout << " = " << carry << std::endl;
 			break;
 		case '*':
+			std::cout << carry << " " << op[0] << " " << num;
 			carry *= atoi(num);
+			std::cout << " = " << carry << std::endl;
 			break;
 		case '/':
+			std::cout << carry << " " << op[0] << " " << num;
 			carry /= atoi(num);
+			std::cout << " = " << carry << std::endl;
 			break;
 		}
 	}
@@ -118,16 +126,24 @@ double operate(double carry, char* num, char* op)
 		switch (op[0])
 		{
 		case '+':
+			std::cout << carry << " " << op[0] << " " << num;
 			carry += atof(num);
+			std::cout << " = " << carry << std::endl;
 			break;
 		case '-':
+			std::cout << carry << " " << op[0] << " " << num;
 			carry -= atof(num);
+			std::cout << " = " << carry << std::endl;
 			break;
 		case '*':
 			carry *= atof(num);
+			std::cout << carry << " " << op[0] << " " << num;
+			std::cout << " = " << carry << std::endl;
 			break;
 		case '/':
+			std::cout << carry << " " << op[0] << " " << num;
 			carry /= atof(num);
+			std::cout << " = " << carry << std::endl;
 			break;
 		}
 	}
