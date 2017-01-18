@@ -3,7 +3,12 @@
 #include <cstdlib>
 #include <string>
 
+//#include <boost/program_options.hpp>
+//namespace po = boost::program_options;
+
 #define NOTIF_ERROR "\nInvalid notation!\nPlease, utilize Polish Notation for arguments (-help for correct usage).\n"
+
+bool g_debugFlag = false;
 
 /**
 *
@@ -84,27 +89,41 @@ int operate(int carry, char* num, char* op)
 	}
 	else
 	{
+		int prev_carry = carry;
+
 		switch (op[0])
 		{
 		case '+':
-			std::cout << carry << " " << op[0] << " " << num;
 			carry += atoi(num);
-			std::cout << " = " << carry << std::endl;
+
+			if (g_debugFlag) {
+				std::cout << prev_carry << " " << op[0] << " " << num;
+				std::cout << " = " << carry << std::endl;
+			}
 			break;
 		case '-':
-			std::cout << carry << " " << op[0] << " " << num;
 			carry -= atoi(num);
-			std::cout << " = " << carry << std::endl;
+
+			if (g_debugFlag) {
+				std::cout << prev_carry << " " << op[0] << " " << num;
+				std::cout << " = " << carry << std::endl;
+			}
 			break;
 		case '*':
-			std::cout << carry << " " << op[0] << " " << num;
 			carry *= atoi(num);
-			std::cout << " = " << carry << std::endl;
+
+			if (g_debugFlag) {
+				std::cout << prev_carry << " " << op[0] << " " << num;
+				std::cout << " = " << carry << std::endl;
+			}
 			break;
 		case '/':
-			std::cout << carry << " " << op[0] << " " << num;
 			carry /= atoi(num);
-			std::cout << " = " << carry << std::endl;
+
+			if (g_debugFlag) {
+				std::cout << prev_carry << " " << op[0] << " " << num;
+				std::cout << " = " << carry << std::endl;
+			}
 			break;
 		}
 	}
@@ -123,27 +142,41 @@ double operate(double carry, char* num, char* op)
 	}
 	else
 	{
+		double prev_carry = carry;
+
 		switch (op[0])
 		{
 		case '+':
-			std::cout << carry << " " << op[0] << " " << num;
 			carry += atof(num);
-			std::cout << " = " << carry << std::endl;
+
+			if (g_debugFlag) {
+				std::cout << prev_carry << " " << op[0] << " " << num;
+				std::cout << " = " << carry << std::endl;
+			}
 			break;
 		case '-':
-			std::cout << carry << " " << op[0] << " " << num;
 			carry -= atof(num);
-			std::cout << " = " << carry << std::endl;
+
+			if (g_debugFlag) {
+				std::cout << prev_carry << " " << op[0] << " " << num;
+				std::cout << " = " << carry << std::endl;
+			}
 			break;
 		case '*':
 			carry *= atof(num);
-			std::cout << carry << " " << op[0] << " " << num;
-			std::cout << " = " << carry << std::endl;
+
+			if (g_debugFlag) {
+				std::cout << prev_carry << " " << op[0] << " " << num;
+				std::cout << " = " << carry << std::endl;
+			}
 			break;
 		case '/':
-			std::cout << carry << " " << op[0] << " " << num;
 			carry /= atof(num);
-			std::cout << " = " << carry << std::endl;
+
+			if (g_debugFlag) {
+				std::cout << prev_carry << " " << op[0] << " " << num;
+				std::cout << " = " << carry << std::endl;
+			}
 			break;
 		}
 	}
@@ -226,9 +259,25 @@ int main(int argc, char* argv[])
 {
 	if (argc > 1)
 	{
-		if (strcmp(argv[1], "-help") == 0)
+		if (argv[1][0] == '-')
 		{
-			printHelp();
+			if (strcmp(argv[1], "-help") == 0 || strcmp(argv[1], "-h") == 0)
+			{
+				printHelp();
+			}
+			if (strcmp(argv[1], "-debug") == 0 || strcmp(argv[1], "-d") == 0)
+			{
+				g_debugFlag = true;
+
+				int argc2 = argc - 1;
+
+				for (int i = 1; i < argc; ++i)
+				{
+					argv[i - 1] = argv[i];
+				}
+
+				parseAndCalculate(argc2, argv);
+			}
 		}
 		else
 		{
